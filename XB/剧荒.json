@@ -1,8 +1,7 @@
-{
-"name": "剧荒TV",
+{"name": "剧荒TV",
 "url": "",
-"ua": "空",
 "User": "空",
+"ua": "",
 "直接播放": "0",
 "列表显示": "0",
 "横图显示": "0",
@@ -12,7 +11,7 @@
 "shifouercijiequ": "0",
 "jiequqian": "空",
 "jiequhou": "空",
-"jiequshuzuqian": "<img class=\"lazy lazyloaded",
+"jiequshuzuqian": "< img class=\"lazy lazyloaded",
 "jiequshuzuhou": "</a>",
 "tupianqian": "data-src=\"",
 "tupianhou": "\"",
@@ -68,4 +67,4 @@
 "bflianjieqian": "href=\"",
 "bflianjiehou": "\"",
 "bfqianzhui": "https://juhuang.tv"
-}
+},
