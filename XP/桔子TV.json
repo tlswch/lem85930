@@ -2,7 +2,7 @@
 	"author": "匿名20220806",
 	"ua": "Mozilla/5.0 (Android 12; Mobile; rv:68.0) Gecko/68.0 Firefox/99.0",
     // 首页地址 用于获取 分类和首页推荐
-	"homeUrl": "https://juztv.com",
+	"homeUrl": "https://chengzi.tv",
     // 分类节点
 	"cateNode": "//ul[@class='dropdown']/li/a[contains(@href, 'vodtype')]",
     // 分类名
