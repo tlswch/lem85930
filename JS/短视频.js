@@ -20,7 +20,8 @@ var rule = {
     lazy:'',
     limit:6,
     double:false,
-    推荐:'*',
+    推荐:'.item-box&&ul&&li;a&&title;img&&data-original;;a&&href',
     一级:'.item-box&&ul&&li;a&&title;img&&data-original;;a&&href',
     二级:'*',
+    //搜索:'.search-video-box&&ul&&li;h3&&Text;img&&src;;a&&href',
 }
