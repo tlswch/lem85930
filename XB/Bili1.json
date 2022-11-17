@@ -1,48 +1,21 @@
 //"cookie": "https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/cookie.txt",
 
-{
-  "classes": [
-    
-{
-      "type_name": "游戏",
-      "type_id": "游戏"
-    },
+{"classes": [
 
-{
-      "type_name": "音乐",
-      "type_id": "音乐"
-    },
-{
-      "type_name": "电影",
-      "type_id": "电影"
-    },
-{
-      "type_name": "电视剧",
-      "type_id": "电视剧"
-    },
-{
-      "type_name": "纪录片",
-      "type_id": "纪录片"
-    },
-{
-      "type_name": "综艺",
-      "type_id": "综艺"
-    },
-{
-      "type_name": "动画",
-      "type_id": "动画"
-    },
-    {
-      "type_name": "演唱会",
-      "type_id": "演唱会"
-    }
-  ],
+{"type_name": "游戏","type_id": "游戏"},
+{"type_name": "音乐","type_id": "音乐"},
+{"type_name": "电影","type_id": "电影"},
+{"type_name": "电视剧","type_id": "电视剧"},
+{"type_name": "纪录片","type_id": "纪录片"},
+{"type_name": "综艺","type_id": "综艺"},
+{"type_name": "动画","type_id": "动画"},
+{"type_name": "演唱会","type_id": "演唱会"}
 
+],
 
-  "filter": {
+"filter": {
 
-    "游戏": [
-
+"游戏": [
 {"key": "order","name": "排序","value": [
 {"n": "综合排序","v": "0"},
 {"n": "最多点击","v": "click"},
@@ -71,194 +44,139 @@
 {"n": "热门游戏","v": "热门游戏"}
 ]
 }
+
 ],
 
-    "音乐": [
-      {
-        "key": "tid",
-        "name": "分类",
-        "value": [
-          {
-            "n": "全部",
-            "v": "音乐"
-          },
+"音乐": [
 
-          {
-            "n": "欧美MV",
-            "v": "欧美MV"
-          },
+{"key": "order","name": "排序","value": [
+{"n": "综合排序","v": "0"},
+{"n": "最多点击","v": "click"},
+{"n": "最新发布","v": "pubdate"},
+{"n": "最多弹幕","v": "dm"},
+{"n": "最多收藏","v": "stow"}
+]
+},
 
-          {
-            "n": "韩国MV",
-            "v": "韩国MV"
-          },
-          
-          {
-            "n": "billboard",
-            "v": "billboard"
-          },
+{"key": "duration","name": "时长","value": [
+{"n": "全部","v": "0"},
+{"n": "60分钟以上","v": "4"},
+{"n": "30~60分钟","v": "3"},
+{"n": "10~30分钟","v": "2"},
+{"n": "10分钟以下","v": "1"}
+]
+},
 
-          {
-            "n": "音乐排行榜",
-            "v": "音乐排行榜"
-          },
-          {
-            "n": "最新",
-            "v": "最新"
-          },
-          {
-            "n": "热门音乐",
-            "v": "热门音乐"
-          }
+{"key": "tid","name": "分类","value": [
+{"n": "全部","v": "音乐"},
+{"n": "欧美MV","v": "欧美MV"},
+{"n": "韩国MV","v": "韩国MV"},
+{"n": "billboard","v": "billboard"},
+{"n": "音乐排行榜","v": "音乐排行榜"},
+{"n": "最新","v": "最新"},
+{"n": "热门音乐","v": "热门音乐"}
+]
+}
 
-        ]
-      }
-    ],
+],
 
-    "电影": [
-      {
-        "key": "tid",
-        "name": "分类",
-        "value": [
-          {
-            "n": "全部",
-            "v": "电影"
-          },
+"电影": [
 
-          {
-            "n": "喜剧电影",
-            "v": "喜剧电影"
-          },
+{"key": "order","name": "排序","value": [
+{"n": "综合排序","v": "0"},
+{"n": "最多点击","v": "click"},
+{"n": "最新发布","v": "pubdate"},
+{"n": "最多弹幕","v": "dm"},
+{"n": "最多收藏","v": "stow"}
+]
+},
 
-          {
-            "n": "恐怖电影",
-            "v": "恐怖电影"
-          },
-          
-          {
-            "n": "科幻电影",
-            "v": "科幻电影"
-          },
+{"key": "duration","name": "时长","value": [
+{"n": "全部","v": "0"},
+{"n": "60分钟以上","v": "4"},
+{"n": "30~60分钟","v": "3"},
+{"n": "10~30分钟","v": "2"},
+{"n": "10分钟以下","v": "1"}
+]
+},
 
-          {
-            "n": "动作电影",
-            "v": "动作电影"
-          },
-          {
-            "n": "惊悚电影",
-            "v": "惊悚电影"
-          },
-          {
-            "n": "悬疑电影",
-            "v": "悬疑电影"
-          }
+{"key": "tid","name": "分类","value": [
+{"n": "全部","v": "电影"},
+{"n": "喜剧电影","v": "喜剧电影"},
+{"n": "恐怖电影","v": "恐怖电影"},
+{"n": "科幻电影","v": "科幻电影"},
+{"n": "动作电影","v": "动作电影"},
+{"n": "惊悚电影","v": "惊悚电影"},
+{"n": "悬疑电影","v": "悬疑电影"}
+]
+}
 
-        ]
-      }
-    ],
+],
   
-    "电视剧": [
-      {
-        "key": "tid",
-        "name": "分类",
-        "value": [
-          {
-            "n": "全部",
-            "v": "电视剧"
-          },
+"电视剧": [
 
-          {
-            "n": "中国电视剧",
-            "v": "中国电视剧"
-          },
+{"key": "order","name": "排序","value": [
+{"n": "综合排序","v": "0"},
+{"n": "最多点击","v": "click"},
+{"n": "最新发布","v": "pubdate"},
+{"n": "最多弹幕","v": "dm"},
+{"n": "最多收藏","v": "stow"}
+]
+},
 
-          {
-            "n": "美国电视剧",
-            "v": "美国电视剧"
-          }
+{"key": "duration","name": "时长","value": [
+{"n": "全部","v": "0"},
+{"n": "60分钟以上","v": "4"},
+{"n": "30~60分钟","v": "3"},
+{"n": "10~30分钟","v": "2"},
+{"n": "10分钟以下","v": "1"}
+]
+},
 
-        ]
-      }
-    ],
+{"key": "tid","name": "分类","value": [
+{"n": "全部","v": "电视剧"},
+{"n": "中国电视剧","v": "中国电视剧"},
+{"n": "美国电视剧","v": "美国电视剧"}
+]
+}
 
-    "演唱会": [
-      {
-        "key": "tid",
-        "name": "分类",
-        "value": [
-          {
-            "n": "全部",
-            "v": "演唱会"
-          },
-          {
-            "n": "Britney Spears",
-            "v": "Britney Spears"
-          },          
+],
 
-          {
-            "n": "Beyonce",
-            "v": "Beyonce"
-          },
-          {
-            "n": "The Weeknd",
-            "v": "The Weeknd"
-          },
-          {
-            "n": "Bruno Mars",
-            "v": "Bruno Mars"
-          },
-          {
-            "n": "Michael Jackson",
-            "v": "Michael Jackson"
-          },
-          {
-            "n": "Taylor Swift",
-            "v": "Taylor Swift"
-          },
-          {
-            "n": "Adele",
-            "v": "Adele"
-          },
-          {
-            "n": "LadyGaga",
-            "v": "LadyGaga"
-          },
-          {
-            "n": "Justin Bieber",
-            "v": "Justin Bieber"
-          },
-          {
-            "n": "Britney Spears",
-            "v": "Britney Spears"
-          }
-        ]
-      },
-      {
-        "key": "duration",
-        "name": "时长",
-        "value": [
-          {
-            "n": "全部",
-            "v": "0"
-          },
-          {
-            "n": "60分钟以上",
-            "v": "4"
-          },
-          {
-            "n": "30~60分钟",
-            "v": "3"
-          },
-          {
-            "n": "10~30分钟",
-            "v": "2"
-          },
-          {
-            "n": "10分钟以下",
-            "v": "1"
-          }
-        ]
-      }
-    ]
-  }
+"演唱会": [
+
+{"key": "order","name": "排序","value": [
+{"n": "综合排序","v": "0"},
+{"n": "最多点击","v": "click"},
+{"n": "最新发布","v": "pubdate"},
+{"n": "最多弹幕","v": "dm"},
+{"n": "最多收藏","v": "stow"}
+]
+},
+
+{"key": "duration","name": "时长","value": [
+{"n": "全部","v": "0"},
+{"n": "60分钟以上","v": "4"},
+{"n": "30~60分钟","v": "3"},
+{"n": "10~30分钟","v": "2"},
+{"n": "10分钟以下","v": "1"}
+]
+},
+
+{"key": "tid","name": "分类","value": [
+{"n": "全部","v": "演唱会"},
+{"n": "Britney Spears","v": "Britney Spears"},          
+{"n": "Beyonce","v": "Beyonce"},
+{"n": "The Weeknd","v": "The Weeknd"},
+{"n": "Bruno Mars","v": "Bruno Mars"},
+{"n": "Michael Jackson","v": "Michael Jackson"},
+{"n": "Taylor Swift","v": "Taylor Swift"},
+{"n": "Adele","v": "Adele"},
+{"n": "LadyGaga","v": "LadyGaga"},
+{"n": "Justin Bieber","v": "Justin Bieber"},
+]
+}
+]
+
+}
+
 }
