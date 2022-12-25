@@ -7,8 +7,6 @@
 
 ],
 
-"cookie":"https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/cookie.txt",
-
-"filter": {}
+"cookie":"https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/cookie.txt"
 
 }
