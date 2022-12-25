@@ -12,4 +12,6 @@
 {"type_name": "动画","type_id": "动画"},
 {"type_name": "演唱会","type_id": "演唱会"}
 
-]}
+],
+"cookie": "https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/cookie.txt"
+}
