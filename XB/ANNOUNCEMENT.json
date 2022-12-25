@@ -3,6 +3,14 @@
 {"classes": [
 
 {"type_name": "Lem原创赏析","type_id": "雷蒙Lem作品"},
+{"type_name": "游戏","type_id": "游戏"},
+{"type_name": "音乐","type_id": "音乐"},
+{"type_name": "电影","type_id": "电影"},
+{"type_name": "电视剧","type_id": "电视剧"},
+{"type_name": "纪录片","type_id": "纪录片"},
+{"type_name": "综艺","type_id": "综艺"},
+{"type_name": "动画","type_id": "动画"},
+{"type_name": "演唱会","type_id": "演唱会"}
 
 ],
 
