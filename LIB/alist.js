@@ -29,8 +29,9 @@ var searchDriver = '';
 var limit_search_show = 200;
 var search_type = '';
 var detail_order = 'name';
+var playRaw = 1; // 播放直链获取,默认0直接拼接/d 填1可以获取阿里oss链接。注意，有时效性
 const request_timeout = 5000;
-const VERSION = 'alist v2/v3 20221129';
+const VERSION = 'alist v2/v3 20221223';
 /**
  * 打印日志
  * @param any 任意变量
@@ -156,6 +157,17 @@ function init(ext) {
 			// 升序排列
 			_path_param.sort((a,b)=>(a.length-b.length));
 		}
+		if(item.password){
+			let pwdObj = {
+				password: item.password
+			};
+			if(!item.params){
+				item.params = {'/':pwdObj};
+			}else{
+				item.params['/'] = pwdObj;
+			}
+			_path_param.unshift('/');
+		}
 		__drives[item.name] = {
 			name: item.name,
 			server: item.server.endsWith("/") ? item.server.rstrip("/") : item.server,
@@ -177,15 +189,22 @@ function init(ext) {
 			getFile(path) {
 				let raw_url = this.server+'/d'+path;
 				raw_url = encodeURI(raw_url);
-				// print('raw_url:'+raw_url);
-				return {raw_url:raw_url};
-
-				// const res = http.post(this.server + this.api.file, { data: this.getParams(path) }).json();
-				// const data = this.settings.v3 ? res.data : res.data.files[0];
-				// if (!this.settings.v3) {
-				// 	data.raw_url = data.url; //v2 的url和v3不一样
-				// }
-				// return data
+				let data = {raw_url:raw_url,raw_url1:raw_url};
+				if(playRaw===1){
+					try {
+						const res = http.post(this.server + this.api.file, { data: this.getParams(path) }).json();
+						data = this.settings.v3 ? res.data : res.data.files[0];
+						if (!this.settings.v3) {
+							data.raw_url = data.url; //v2 的url和v3不一样
+						}
+						data.raw_url1 = raw_url;
+						return data
+					}catch (e) {
+						return data
+					}
+				}else{
+					return data
+				}
 			},
 			isFolder(data) { return data.type === 1 },
 			isVideo(data) { //判断是否是 视频文件
@@ -254,7 +273,25 @@ function home(filter) {
 }
 
 function homeVod(params) {
-	return JSON.stringify({ 'list': [] });
+	let _post_data = {"pageNum":0,"pageSize":100};
+	let _post_url = 'https://pbaccess.video.qq.com/trpc.videosearch.hot_rank.HotRankServantHttp/HotRankHttp';
+	let data = http.post(_post_url,{ data: _post_data }).json();
+	let _list = [];
+	try {
+		data = data['data']['navItemList'][0]['hotRankResult']['rankItemList'];
+		// print(data);
+		data.forEach(it=>{
+			_list.push({
+				vod_name:it.title,
+				vod_id:'msearch:'+it.title,
+				vod_pic:'https://avatars.githubusercontent.com/u/97389433?s=120&v=4',
+				vod_remarks:it.changeOrder,
+			});
+		});
+	}catch (e) {
+		print('Alist获取首页推荐发送错误:'+e.message);
+	}
+	return JSON.stringify({ 'list': _list });
 }
 
 function category(tid, pg, filter, extend) {
@@ -416,7 +453,8 @@ function getAll(otid,tid,drives,path){
 		return JSON.stringify({ 'list': [vod] });
 	}catch (e) {
 		print(e.message);
-		return JSON.stringify({ 'list': [{}] });
+		let list = [{vod_name:'无数据,防无限请求',type_name: "文件夹",vod_id:'no_data',vod_remarks:'不要点,会崩的',vod_pic:'https://ghproxy.com/https://raw.githubusercontent.com/hjdhnx/dr_py/main/404.jpg',vod_actor:e.message,vod_director: tid,vod_content: otid}];
+		return JSON.stringify({ 'list': list });
 	}
 }
 
@@ -428,7 +466,7 @@ function detail(tid) {
 	let isFile = isMedia(tid.split('@@@')[0]);
 	print(`isFile:${tid}?${isFile}`);
 	let { drives, path } = get_drives_path(tid);
-	print(`drives:${drives},path:${path}`);
+	print(`drives:${drives},path:${path},`);
 	if (path.endsWith("/")) { //长按文件夹可以 加载里面全部视频到详情
 		return getAll(otid,tid,drives,path);
 	} else {
@@ -481,11 +519,12 @@ function play(flag, id, flags) {
 	let vod = {
 		'parse': 0,
 		'playUrl': '',
+		// 'url': drives.getFile(urls[0]).raw_url+'#.m3u8' // 加 # 没法播放
 		'url': drives.getFile(urls[0]).raw_url
 	};
 	if (urls.length >= 2) {
 		const path = urls[0].substring(0, urls[0].lastIndexOf('/') + 1);
-		vod.subt = drives.getFile(path + urls[1]).raw_url;
+		vod.subt = drives.getFile(path + urls[1]).raw_url1;
 	}
 	print("----play----");
 	print(vod);
