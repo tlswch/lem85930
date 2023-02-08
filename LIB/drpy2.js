@@ -34,7 +34,8 @@ function pre(){
 }
 
 let rule = {};
-const VERSION = 'drpy2 3.9.27 20221129';
+let vercode = typeof(pdfl) ==='function'?'drpy2.1':'drpy2';
+const VERSION = vercode+' 3.9.32 20221219';
 /** 已知问题记录
  * 1.影魔的jinjia2引擎不支持 {{fl}}对象直接渲染 (有能力解决的话尽量解决下，支持对象直接渲染字符串转义,如果加了|safe就不转义)[影魔牛逼，最新的文件发现这问题已经解决了]
  * Array.prototype.append = Array.prototype.push; 这种js执行后有毛病,for in 循环列表会把属性给打印出来 (这个大毛病需要重点排除一下)
@@ -1280,6 +1281,11 @@ function categoryParse(cateObj) {
     let d = [];
     // let url = cateObj.url.replaceAll('fyclass', cateObj.tid).replaceAll('fypage', cateObj.pg);
     let url = cateObj.url.replaceAll('fyclass', cateObj.tid);
+    if(cateObj.pg === 1 && url.includes('[')&&url.includes(']')){
+        url = url.split('[')[1].split(']')[0];
+    }else if(cateObj.pg > 1 && url.includes('[')&&url.includes(']')){
+        url = url.split('[')[0];
+    }
     if(rule.filter_url){
         if(!/fyfilter/.test(url)){
             if(!url.endsWith('&')&&!rule.filter_url.startsWith('&')){
@@ -1324,11 +1330,7 @@ function categoryParse(cateObj) {
             url = url.replaceAll('fypage',cateObj.pg);
         }
     }
-    if(cateObj.pg === 1 && url.includes('[')&&url.includes(']')){
-        url = url.split('[')[1].split(']')[0];
-    }else if(cateObj.pg > 1 && url.includes('[')&&url.includes(']')){
-        url = url.split('[')[0];
-    }
+
     MY_URL = url;
     // setItem('MY_URL',MY_URL);
     console.log(MY_URL);
@@ -1396,13 +1398,24 @@ function categoryParse(cateObj) {
     if(d.length>0){
         print(d.slice(0,2));
     }
-    return d.length<1?'{}':JSON.stringify({
+    let pagecount = 0;
+    if(rule.pagecount && typeof(rule.pagecount) === 'object' && rule.pagecount.hasOwnProperty(MY_CATE)){
+        print(`MY_CATE:${MY_CATE},pagecount:${JSON.stringify(rule.pagecount)}`);
+        pagecount = parseInt(rule.pagecount[MY_CATE]);
+    }
+    let nodata = {
+        list:[{vod_name:'无数据,防无限请求',vod_id:'no_data',vod_remarks:'不要点,会崩的',vod_pic:'https://ghproxy.com/https://raw.githubusercontent.com/hjdhnx/dr_py/main/404.jpg'}],
+        total:1,pagecount:1,page:1,limit:1
+    };
+    let vod =  d.length<1?JSON.stringify(nodata):JSON.stringify({
         'page': parseInt(cateObj.pg),
-        'pagecount': 999,
+        'pagecount': pagecount||999,
         'limit': 20,
         'total': 999,
         'list': d,
     });
+    // print(vod);
+    return vod
 }
 
 /**
@@ -1462,7 +1475,10 @@ function searchParse(searchObj) {
                 //     new_dict[i.split('=')[0]] = i.split('=')[1];
                 // });
                 // html = post(rurl,{body:new_dict});
-                html = post(rurl,{body:params});
+                let _fetch_params = JSON.parse(JSON.stringify(rule_fetch_params));
+                let postData = {body:params};
+                Object.assign(_fetch_params,postData);
+                html = post(rurl,_fetch_params);
             }else if(req_method==='postjson'){
                 let rurls = MY_URL.split(';')[0].split('#')
                 let rurl = rurls[0]
@@ -1473,7 +1489,10 @@ function searchParse(searchObj) {
                 }catch (e) {
                     params = '{}'
                 }
-                html = post(rurl,{body:params});
+                let _fetch_params = JSON.parse(JSON.stringify(rule_fetch_params));
+                let postData = {body:params};
+                Object.assign(_fetch_params,postData);
+                html = post(rurl,_fetch_params);
             }else{
                 html = getHtml(MY_URL);
             }
@@ -1755,38 +1774,30 @@ function detailParse(detailObj){
                     let tab_ext =  p.tabs.split(';').length > 1 && !is_tab_js ? p.tabs.split(';')[1] : '';
                     let p1 = p.lists.replaceAll('#idv', tab_name).replaceAll('#id', i);
                     tab_ext = tab_ext.replaceAll('#idv', tab_name).replaceAll('#id', i);
-                    // 测试jsp提速
-                    // console.log(p1);
-                    // p1 = p1.replace(':eq(0)',',0').replace(' ','&&');
-                    // console.log(p1);
-                    // console.log(html);
-                    let vodList = [];
-                    try {
-                        vodList =  _pdfa(html, p1);
-                        console.log('len(vodList):'+vodList.length);
-                    }catch (e) {
-                        // console.log(e.message);
-                    }
-                    let new_vod_list = [];
-                    // print('tab_ext:'+tab_ext);
                     let tabName = tab_ext?_pdfh(html, tab_ext):tab_name;
                     console.log(tabName);
-                    // console.log('cheerio解析Text');
-                    // 此处存在性能问题: pt版2000集需要650毫秒,俊版1300毫秒 特么的优化不动 主要后面定位url的我拿他没法
-                    // 主要性能问题在于 _pd(it, list_url, MY_URL)
+                    // print('tab_ext:'+tab_ext);
+                    let new_vod_list = [];
                     let tt1 = (new Date()).getTime();
-                    vodList.forEach((it,idex)=>{
-                        // 请注意,这里要固定pdfh解析body&&Text,不需要下划线,没写错
-                        // new_vod_list.push(pdfh(it,'body&&Text')+'$'+_pd(it,'a&&href',MY_URL));
-                        // new_vod_list.push(cheerio.load(it).text()+'$'+_pd(it,'a&&href',MY_URL));
-                        // new_vod_list.push(_pdfh(it, list_text).trim() + '$' + _pd(it, list_url, MY_URL));
-                        // new_vod_list.push(_pdfh(it, list_text).trim() + '$' +idex);
-                        // new_vod_list.push(idex + '$' +_pdfh(it, list_url));
-                        new_vod_list.push(_pdfh(it, list_text).trim() + '$' +_pd(it, list_url,MY_URL));
-                    });
-                    if(vodList.length>0){
+                    // print('pdfl:'+typeof (pdfl));
+                    if(typeof (pdfl) ==='function'){
+                        new_vod_list = pdfl(html, p1, list_text, list_url, MY_URL);
+                    }else {
+                        let vodList = [];
+                        try {
+                            vodList =  _pdfa(html, p1);
+                            console.log('len(vodList):'+vodList.length);
+                        }catch (e) {
+                            // console.log(e.message);
+                        }
+                        for (let i = 0; i < vodList.length; i++) {
+                            let it = vodList[i];
+                            new_vod_list.push(_pdfh(it, list_text).trim() + '$' + _pd(it, list_url, MY_URL));
+                        }
+                    }
+                    if(new_vod_list.length>0){
                         new_vod_list = forceOrder(new_vod_list,'',x=>x.split('$')[0]);
-                        console.log(`drpy影响性能代码共计列表数循环次数:${vodList.length},耗时:${(new Date()).getTime()-tt1}毫秒`);
+                        console.log(`drpy影响性能代码共计列表数循环次数:${new_vod_list.length},耗时:${(new Date()).getTime()-tt1}毫秒`);
                     }
                     // print(new_vod_list);
                     let vlist = new_vod_list.join('#');
@@ -1961,6 +1972,7 @@ function init(ext) {
         rule.encoding = rule.编码||rule.encoding||'utf-8';
         rule.图片来源 = rule.图片来源||'';
         rule.play_json = rule.hasOwnProperty('play_json')?rule.play_json:[];
+        rule.pagecount = rule.hasOwnProperty('pagecount')?rule.pagecount:{};
         if(rule.headers && typeof(rule.headers) === 'object'){
             try {
                 let header_keys = Object.keys(rule.headers);
